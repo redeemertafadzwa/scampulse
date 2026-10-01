@@ -1,0 +1,58 @@
+// String table. Only strings marked reviewed:true are shown; anything else
+// falls back to English. Unreviewed entries carry a TODO for a fluent speaker.
+// No silent machine translation.
+export const STRINGS = {
+  en: {
+    danger: { text: "Danger", reviewed: true },
+    becareful: { text: "Be careful", reviewed: true },
+    nowarn: { text: "No warning signs found", reviewed: true },
+    check_title: { text: "Paste a message you're unsure about", reviewed: true },
+    check_sub: { text: "Nothing is sent anywhere. The check happens on your phone.", reviewed: true },
+    paste: { text: "Paste from clipboard", reviewed: true },
+    clear: { text: "Clear", reviewed: true },
+    check_it: { text: "Check it", reviewed: true },
+    tip: { text: "Tip: in WhatsApp or SMS, long-press a message and choose Share, then ScamPulse.", reviewed: true },
+    constant: { text: "ScamPulse can miss things. If money or your PIN is involved, check with the real company.", reviewed: true },
+    why: { text: "Why? See the details", reviewed: true },
+    read_aloud: { text: "Read aloud", reviewed: true },
+    report_scam: { text: "Report as scam", reviewed: true },
+    this_fine: { text: "This is fine", reviewed: true },
+    make_report: { text: "Make a report", reviewed: true },
+    check_another: { text: "Check another message", reviewed: true },
+    feed_title: { text: "Scams going around", reviewed: true },
+    feed_sub: { text: "Most-reported first. Items marked “Example” are seeded, not live reports.", reviewed: true },
+    send_title: { text: "Before you send money", reviewed: true },
+    report_title: { text: "Report", reviewed: true },
+    report_sub: { text: "A masked report for a bank, mobile-money provider or CERT. No personal details.", reviewed: true },
+    copy: { text: "Copy", reviewed: true },
+    download: { text: "Download", reviewed: true },
+    settings: { text: "Settings", reviewed: true },
+    language: { text: "Language", reviewed: true },
+    safeword: { text: "Family / office safe-word", reviewed: true },
+    privacy: { text: "Privacy", reviewed: true },
+    delete_data: { text: "Delete my data", reviewed: true },
+    nav_check: { text: "Check", reviewed: true },
+    nav_feed: { text: "Feed", reviewed: true },
+    nav_send: { text: "Before you send", reviewed: true },
+    nav_report: { text: "Report", reviewed: true },
+  },
+  sn: {
+    danger: { text: "Ngozi", reviewed: true },
+    becareful: { text: "Chenjera", reviewed: true },
+    nowarn: { text: "Hapana zviratidzo zvengozi", reviewed: true },
+    check_it: { text: "Ongorora", reviewed: true },
+    check_title: { text: "Nama meseji yaunosahadzika nayo", reviewed: true },
+    paste: { text: "Nama kubva paclipboard", reviewed: true },
+    clear: { text: "Bvisa", reviewed: true },
+    nav_check: { text: "Ongorora", reviewed: true },
+    nav_feed: { text: "Nyaya", reviewed: true },
+    report_scam: { text: "Mhan'ara sechihwando", reviewed: true },
+    // TODO (fluent speaker): review remaining Shona strings; English shown meanwhile.
+  },
+  nd: {
+    danger: { text: "Ingozi", reviewed: true },
+    becareful: { text: "Qaphela", reviewed: true },
+    check_it: { text: "Hlola", reviewed: true },
+    // TODO (fluent speaker): translate & review remaining isiNdebele strings; English shown meanwhile.
+  },
+};

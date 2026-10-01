@@ -1,0 +1,34 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ScamPulse — Privacy</title>
+<link rel="stylesheet" href="{% static 'css/app.css' %}">
+</head>
+<body>
+<header class="app-header"><div class="brand"><span class="mark">SP</span> ScamPulse</div>
+  <a class="icon-btn" href="/">Back</a></header>
+<main class="wrap">
+  <h1>Privacy</h1>
+  <div class="card">
+    <p><strong>Your messages stay on your phone.</strong> The scam check runs entirely on your
+      device using a small model downloaded once. Nothing is uploaded when you check a message.</p>
+    <p><strong>Reporting is opt-in.</strong> You only share something if you tap
+      <em>Report as scam</em>. Before anything leaves your phone we redact phone numbers
+      (+263 and 07x), links, amounts, account numbers and names, and show you exactly what
+      will be sent. Nothing uploads automatically.</p>
+    <p><strong>No accounts.</strong> We store an anonymous random device token, used only for
+      rate limits and one-vote-per-device. The server keeps only a hash of it — never names,
+      emails, or sign-ups.</p>
+    <p><strong>You are in control.</strong> “Delete my data” in Settings clears the device
+      token, safe-word, local blocklist and any queued reports from this phone.</p>
+    <p><strong>What we never claim.</strong> ScamPulse cannot check audio or video and never
+      claims to detect deepfakes. It can miss things — if money or your PIN is involved,
+      always confirm with the real company.</p>
+  </div>
+  <p class="muted"><a href="/">Return to the app</a></p>
+</main>
+</body>
+</html>

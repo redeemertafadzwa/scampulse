@@ -1,0 +1,7 @@
+# Slim server requirements for PythonAnywhere free (no heavy ML libs).
+# The detection model runs on the phone; the server only needs Django.
+# Retraining (scikit-learn/pandas) is done locally - see requirements.txt.
+Django==6.1.1
+djangorestframework==3.18.1
+whitenoise==6.12.0
+python-dotenv==1.1.0

@@ -1,0 +1,9 @@
+{
+  "name": "scampulse",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "parity": "node tests/parity.test.js"
+  }
+}

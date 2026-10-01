@@ -1,0 +1,135 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ScamPulse — check a suspicious message</title>
+<meta name="description" content="Check a suspicious message, see why it's risky, and know what to do. Works offline.">
+<meta name="theme-color" content="#2E4B3C">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="apple-touch-icon" href="{% static 'icons/icon-192.png' %}">
+<link rel="icon" href="{% static 'icons/icon-192.png' %}">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'css/app.css' %}">
+</head>
+<body>
+
+<header class="app-header">
+  <div class="brand"><span class="mark">SP</span> ScamPulse</div>
+  <button class="icon-btn" id="btn-settings" aria-label="Settings">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.1-1l2-1.6-2-3.4-2.4 1a7 7 0 0 0-1.7-1L14.5 2h-5l-.3 2.9a7 7 0 0 0-1.7 1l-2.4-1-2 3.4L2.1 11a7 7 0 0 0 0 2l-2 1.6 2 3.4 2.4-1a7 7 0 0 0 1.7 1l.3 2.9h5l.3-2.9a7 7 0 0 0 1.7-1l2.4 1 2-3.4-2-1.6c.1-.3.1-.7.1-1Z"/></svg>
+  </button>
+</header>
+
+<main class="wrap">
+
+  <!-- CHECK -->
+  <section class="screen active" id="screen-check">
+    <h1 data-i18n="check_title">Paste a message you're unsure about</h1>
+    <p class="muted" data-i18n="check_sub">Nothing is sent anywhere. The check happens on your phone.</p>
+    <div class="card">
+      <textarea id="msg" placeholder="Paste the SMS or WhatsApp message here…" maxlength="2000"></textarea>
+      <div class="btn-row" style="margin:10px 0">
+        <button class="btn btn-ghost btn-sm" id="btn-paste" data-i18n="paste">Paste from clipboard</button>
+        <button class="btn btn-ghost btn-sm" id="btn-clear" data-i18n="clear">Clear</button>
+      </div>
+      <button class="btn btn-primary" id="btn-check" data-i18n="check_it">Check it</button>
+    </div>
+    <p class="muted" style="font-size:.9rem" data-i18n="tip">Tip: in WhatsApp or SMS, long-press a message and choose Share, then ScamPulse.</p>
+  </section>
+
+  <!-- VERDICT -->
+  <section class="screen" id="screen-verdict">
+    <div id="band" class="band ok"><span class="sym" id="band-sym">✓</span><span class="big" id="band-word">—</span></div>
+    <h2 class="verdict-name" id="verdict-name">—</h2>
+    <p class="verdict-why" id="verdict-why">—</p>
+    <button class="btn btn-primary" id="verdict-action">—</button>
+    <p class="constant-note" data-i18n="constant">ScamPulse can miss things. If money or your PIN is involved, check with the real company.</p>
+
+    <details>
+      <summary data-i18n="why">Why? See the details</summary>
+      <div id="why-body" style="margin-top:10px"></div>
+    </details>
+
+    <div class="btn-row" style="margin-top:16px">
+      <button class="btn btn-ghost btn-sm" id="btn-read" data-i18n="read_aloud">Read aloud</button>
+      <button class="btn btn-ghost btn-sm" id="btn-report-scam" data-i18n="report_scam">Report as scam</button>
+      <button class="btn btn-ghost btn-sm" id="btn-fine" data-i18n="this_fine">This is fine</button>
+    </div>
+    <button class="btn btn-accent" id="btn-make-report" style="margin-top:10px" data-i18n="make_report">Make a report</button>
+    <button class="btn btn-ghost" id="btn-check-another" style="margin-top:10px" data-i18n="check_another">Check another message</button>
+  </section>
+
+  <!-- FEED -->
+  <section class="screen" id="screen-feed">
+    <h1 data-i18n="feed_title">Scams going around</h1>
+    <p class="muted" data-i18n="feed_sub">Most-reported first. Items marked “Example” are seeded, not live reports.</p>
+    <div class="card" id="feed-list"><p class="muted">Loading…</p></div>
+  </section>
+
+  <!-- BEFORE YOU SEND -->
+  <section class="screen" id="screen-send">
+    <h1 data-i18n="send_title">Before you send money</h1>
+    <div id="send-flow"></div>
+  </section>
+
+  <!-- REPORT -->
+  <section class="screen" id="screen-report">
+    <h1 data-i18n="report_title">Report</h1>
+    <p class="muted" data-i18n="report_sub">A masked report for a bank, mobile-money provider or CERT. No personal details.</p>
+    <div class="card"><pre class="report" id="report-text">Check a message first, then make a report.</pre></div>
+    <div class="btn-row">
+      <button class="btn btn-ghost btn-sm" id="btn-copy" data-i18n="copy">Copy</button>
+      <button class="btn btn-ghost btn-sm" id="btn-download" data-i18n="download">Download</button>
+    </div>
+  </section>
+
+  <!-- SETTINGS -->
+  <section class="screen" id="screen-settings">
+    <h1 data-i18n="settings">Settings</h1>
+    <div class="card">
+      <div class="field">
+        <label data-i18n="language">Language</label>
+        <select id="lang"><option value="en">English</option><option value="sn">chiShona</option><option value="nd">isiNdebele</option></select>
+      </div>
+      <div class="field">
+        <label data-i18n="safeword">Family / office safe-word</label>
+        <input id="safeword" placeholder="A word only your people know">
+      </div>
+      <p class="muted" id="last-updated">Last updated: —</p>
+      <div class="btn-row">
+        <button class="btn btn-ghost btn-sm" id="btn-privacy" data-i18n="privacy">Privacy</button>
+        <button class="btn btn-ghost btn-sm" id="btn-delete" data-i18n="delete_data">Delete my data</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRIVACY -->
+  <section class="screen" id="screen-privacy">
+    <h1 data-i18n="privacy">Privacy</h1>
+    <div class="card">
+      <p><strong>Your messages stay on your phone.</strong> The scam check runs entirely on your device. Nothing is uploaded when you check a message.</p>
+      <p>You only share something if you tap <em>Report as scam</em> — and we redact phone numbers, links, amounts, account numbers and names first, and show you exactly what will be sent before anything leaves your phone.</p>
+      <p>We store an anonymous random device token (for rate limits and one-vote-per-device) — only a hash of it is kept on the server. No accounts, no names, no sign-up.</p>
+      <p>Tap “Delete my data” in Settings to clear everything stored on this device.</p>
+      <p class="muted">See <a href="/privacy/">the full privacy page</a>.</p>
+    </div>
+  </section>
+
+</main>
+
+<nav class="nav" id="nav">
+  <button data-screen="check" class="active"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg><span data-i18n="nav_check">Check</span></button>
+  <button data-screen="feed"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/></svg><span data-i18n="nav_feed">Feed</span></button>
+  <button data-screen="send"><svg viewBox="0 0 24 24"><path d="M12 3v12m0 0 4-4m-4 4-4-4"/><rect x="4" y="17" width="16" height="4" rx="1"/></svg><span data-i18n="nav_send">Before you send</span></button>
+  <button data-screen="report"><svg viewBox="0 0 24 24"><path d="M6 3h9l5 5v13H6Z"/><path d="M14 3v5h5"/></svg><span data-i18n="nav_report">Report</span></button>
+</nav>
+
+<div id="toast" class="toast" hidden></div>
+
+<script type="module" src="{% static 'js/app.js' %}"></script>
+</body>
+</html>

@@ -3,8 +3,10 @@ import json
 from pathlib import Path
 
 from django.conf import settings
+from django.contrib.admin.views.decorators import staff_member_required
 from django.http import HttpResponse, JsonResponse
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, redirect, render
+from django.views.decorators.http import require_POST
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -45,6 +47,32 @@ def app(request):
 
 def privacy(request):
     return render(request, "privacy.html")
+
+
+@staff_member_required
+def moderate(request):
+    """Simple, phone-friendly moderation dashboard (easier than /admin/)."""
+    pending = ScamFamily.objects.filter(status="new").order_by("-report_count", "-last_seen")
+    confirmed = ScamFamily.objects.filter(status="confirmed").order_by("-last_seen")[:25]
+    stats = {
+        "pending": pending.count(),
+        "confirmed": ScamFamily.objects.filter(status="confirmed").count(),
+        "reports": Report.objects.count(),
+    }
+    return render(request, "moderate.html",
+                  {"pending": pending, "confirmed": confirmed, "stats": stats})
+
+
+@staff_member_required
+@require_POST
+def moderate_action(request, family_id, action):
+    fam = get_object_or_404(ScamFamily, id=family_id)
+    if action == "verify":
+        fam.status = "confirmed"
+    elif action == "dismiss":
+        fam.status = "rejected"
+    fam.save(update_fields=["status"])
+    return redirect("moderate")
 
 
 def health(request):

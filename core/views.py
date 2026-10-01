@@ -11,6 +11,7 @@ from rest_framework.response import Response
 
 from normalise import fingerprint as fp
 from normalise import redact
+from engine import rule_assess  # rule-only (no ML libs needed on the server)
 
 from .models import ModelVersion, Report, ScamFamily
 from .serializers import (FamilySerializer, ModelVersionSerializer,
@@ -72,7 +73,10 @@ def reports(request):
     finger = fp(text)
     if not finger:
         return Response({"detail": "empty after redaction"}, status=400)
-    category = ser.validated_data.get("claimed_category", "") or "Unknown"
+    # Auto-categorise by word-by-word scanning for scam indicators,
+    # instead of trusting whatever the user claimed.
+    _reasons, _score, rule_threat, _mw = rule_assess(text)
+    category = rule_threat or ser.validated_data.get("claimed_category") or "Unknown"
     fam = match_or_create_family(finger, text, category)
     Report.objects.create(
         redacted_text=text, fingerprint=finger,

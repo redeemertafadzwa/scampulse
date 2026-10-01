@@ -9,22 +9,17 @@ class ScamFamilyAdmin(admin.ModelAdmin):
                     "is_example", "last_seen")
     list_filter = ("status", "category", "is_example", "last_seen")
     search_fields = ("representative_text", "representative_fingerprint", "category")
-    actions = ["approve", "reject"]
+    actions = ["verify"]
     ordering = ("-report_count",)
 
     @admin.display(description="sample (redacted)")
     def short(self, obj):
         return obj.representative_text[:60]
 
-    @admin.action(description="Approve: mark as Confirmed scam")
-    def approve(self, request, queryset):
+    @admin.action(description="✅ Verify (publish this scam to all users)")
+    def verify(self, request, queryset):
         n = queryset.update(status="confirmed")
-        self.message_user(request, f"{n} family(ies) confirmed.")
-
-    @admin.action(description="Reject: mark as Not a scam")
-    def reject(self, request, queryset):
-        n = queryset.update(status="rejected")
-        self.message_user(request, f"{n} family(ies) rejected.")
+        self.message_user(request, f"{n} scam(s) verified and now live for everyone.")
 
 
 @admin.register(Report)
